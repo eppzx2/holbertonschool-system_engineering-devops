@@ -1,0 +1,44 @@
+# Application server and Web server together
+
+
+             -------------------
+             |     Users       |
+             ---------+---------
+                      |
+             ---------v---------
+             | Load Balancer 1 |
+             | (HAProxy)       |
+             ---------+---------
+                      |
+             ---------v---------
+             | Load Balancer 2 |
+             | (HAProxy)       |
+             ---------+---------
+                      |
+        -------------------------------
+        |             |               |
+     --------      --------       --------
+     | Web  |      |  App |       | DB   |
+     |Server|      |Server|       |Server|
+     --------      --------       --------
+Web server: handles http/https requests and serves static content(html, css, js)
+App server: runs application logic(python, php)
+Database: stores persistent data
+Load Balancer: two haproxy nodes configured in cluster to distrubute traffic
+
+
+
+Communication:
+User-DNS-HAProxy(lb1 or lb2)
+lb routes request to web server
+web server forwards dynamic requests to app server
+app server queries db server as needed
+response flows back: db-app-web-lb-user
+
+
+Why split components:
+server separation improves scalability, security, performance
+lb cluster avoids single point of failure and balances traffic
+db server isolates heavy database operations from web/app logic
+
+
