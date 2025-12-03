@@ -1,0 +1,35 @@
+#three server and secure
+
+
+Three server infrastructure:
+              -------------------
+              |     Users       |
+              ---------+---------
+                       |
+                  [Firewall 1]
+                       |
+              ---------v----------
+              |   Load Balancer  |  (HAProxy + SSL)
+              ---------+----------
+                       |
+            -------------------------------
+            |             |               |
+      [Firewall 2]   [Firewall 3]     [Firewall 4]
+            |             |               |
+     -------v------   ----v--------    ---v--------
+     | Server 1   |   | Server 2  |    | Server 3 |
+     | Nginx      |   | Nginx     |    | Nginx    |
+     | App Server |   | App       |    | App      |
+     | MySQL (R)  |   | MySQL(R)  |    | MySQL(P) |
+     | Monitoring |   | Monitoring|    |Monitoring|
+     --------------   -------------    ------------
+Firewalls: protect servers from unauthorized access, block unwanted traffic
+SSL certificate: serve encrypted traffic to secure data
+Monitoring: collect metrics and send to monitoring tool
+
+
+
+Issues:
+Terminating SSL at LoadBalancer: traffic from lb, backend servers is unencrypted
+Single MySQL Primary: all writes go to one server-bottleneck
+All Servers identical: Overlapping roles complicate scaling and maintenance
