@@ -1,0 +1,40 @@
+#this file explains design of a server web infrastructure
+
+
+User wants to access website:
+Firstly, a user opens their browser and types www.footbar.com. The browser needs to translate this domain name into an ip adress so it can contact with your server.
+
+
+DNS resolution:
+footbar.com is our domain name. The www part in the url is a subdomain. The DNS record type for www is A record (the domain name acts as humanreadable label for your server's IP address and without it users need to remember IP instead of domain name.
+
+
+Single Server Infrastructure:
+----------------------
+|       SERVER       |
+----------------------
+|     WEB SERVER     |
+----------------------
+| APPLICATION SERVER |
+----------------------
+| APPLICATION FILES  |
+----------------------
+|  MySQL DATABASE    |
+----------------------  
+server: a physical or virtual machine that runs your software, listens for network requests, and serves content.
+web server: handles http/https requests from the user's browser
+application server: takes requests from the web server, runs the code (python, php, node.js)
+application files (codebase): your website's source code(html, css, js)
+database: stores persistent data such as users, posts, comments.
+
+
+Communication:
+browser sends an http request to www.footbar.com. Nginx receives the request. Application server executes the code. Application server returns the response to Nginx. Nginx sends the http response back to the user's browser. (http/https)
+
+
+Issues:
+if server crashes, the website becomes completely unavailable.
+
+deploying new code often requires restarting nginx or the app server, causing temporary downtime
+
+if trafic increases, single server may become overloaded
