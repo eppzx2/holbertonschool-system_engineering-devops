@@ -1,0 +1,34 @@
+#multi server web infrastructure
+
+
+Multi-Server:
+                     --------------------
+                     |      Browser     |
+                     --------------------
+                              |
+                              v
+                     --------------------
+                     |  Load Balancer   |  (HAProxy)
+                     --------------------
+                       |              |
+        ---------------               ------------
+        |                                        |
+        v                                        v
+---------------------                 ---------------------
+| Web/App/DB Server |                 | Web/App/DB Server |
+|-------------------|                 |-------------------|
+| Nginx Web Server  |                 | Nginx Web Server  |
+| Application Code  |                 | Application Code  |
+| Application Server|                 | Application Server|
+| MySQL DB (Replica)|                 | MySQL DB (Primary)|
+---------------------                 ---------------------
+
+Load balancer: distributes incoming traffic across multiple servers
+Replica DB: provides backup in case primary fails
+
+
+Potential issues:
+if Loadbalancer goes down, no traffic reaches servers
+if primary db fails, writes cannot proceed until failover
+no firewall, no security
+no https, communication is unencrypted
